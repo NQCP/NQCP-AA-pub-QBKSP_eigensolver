@@ -27,4 +27,4 @@ These can be installed via `pip install -r requirements.txt`.
 
 To generate the necessary data, you should run the script *data_generator.py*. Then, you can use each notebook to plot and analyze the data. 
 
-Please replace the data path with your data path.
+In all files, please replace the variable `Data_path` with the location where you would like to store the generated data.
