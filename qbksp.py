@@ -80,7 +80,7 @@ def create_T_S_block_numerical(init_states, unitary_operator, max_iter=None, thr
                         T[idx_j, idx_i] = array[bi*B+bj][i-j+1]
                  
                         S[idx_j, idx_i] = array[bj * B + bi][i - j]
-                        if i!=j:
+                        if i>j:
                             T[idx_i, idx_j] = np.conj(array[bi*B+bj][i-j-1])
                             S[idx_i, idx_j] = np.conj(S[idx_j, idx_i]) 
 
