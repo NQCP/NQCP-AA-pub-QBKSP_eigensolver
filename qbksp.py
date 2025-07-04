@@ -21,7 +21,6 @@ BACKEND = Aer.get_backend('qasm_simulator')
 #####################################################################################
 ############# Numerical Quantum Block Krylov Subspace Projection (QBKSP) ############
 #####################################################################################
-
 def create_T_S_block_numerical(init_states, unitary_operator, max_iter=None, threshold=None):
     """
     Numerical Quantum Block Krylov Subspace Projection (QBKSP)
@@ -74,15 +73,19 @@ def create_T_S_block_numerical(init_states, unitary_operator, max_iter=None, thr
                     array[bi*B+bj].append(np.vdot(p[bi], p[(i+1)*B+bj]))
                 else:
                     array[bi*B+bj].append(array[bj*B+bi][i+1])
-                
-                for j in range(i + 1):
+
+                idx_j = i * B + bj
+                T[idx_j, idx_i] = array[bi*B+bj][1]
+                 
+                S[idx_j, idx_i] = array[bj * B + bi][0]
+                for j in range(i):
                         idx_j = j * B + bj
                         T[idx_j, idx_i] = array[bi*B+bj][i-j+1]
                  
                         S[idx_j, idx_i] = array[bj * B + bi][i - j]
-                        if i>j:
-                            T[idx_i, idx_j] = np.conj(array[bi*B+bj][i-j-1])
-                            S[idx_i, idx_j] = np.conj(S[idx_j, idx_i]) 
+                        
+                        T[idx_i, idx_j] = np.conj(array[bi*B+bj][i-j-1])
+                        S[idx_i, idx_j] = np.conj(S[idx_j, idx_i]) 
 
         # Check convergence if threshold is not None:
         if  threshold is not None:
