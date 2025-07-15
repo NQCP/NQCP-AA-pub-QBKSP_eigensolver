@@ -14,7 +14,7 @@ This repository is organized as follows:
 
 * *data_generator.py* - Contains the code to generate all data needed to reproduce the plots in the article;
 * *utils.py* - Contains some auxiliary functions;
-* *qbksp.py* - Contains the quantum block krylov subspace projector algorithm;
+* *qbksp.py* - Contains the quantum block Krylov subspace projector algorithm optimized for a real and symmetric Hamiltonian and real initial references;
 * *Heisenberg.ipynb* - Contains the code to reproduce the Heisenberg model plots;
 * *molecules.ipynb* - Contains the code to reproduce the molecular plots.
 
