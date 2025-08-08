@@ -21,7 +21,7 @@ BACKEND = Aer.get_backend('qasm_simulator')
 #####################################################################################
 ############# Numerical Quantum Block Krylov Subspace Projection (QBKSP) ############
 #####################################################################################
-def create_T_S_block_numerical(init_states, unitary_operator, max_iter=None, threshold=None):
+def create_T_S_block_numerical(init_states, unitary_operator, max_iter=None, threshold=None, gaussian_noise=False, gaussian_value=1e-4):
     """
     Numerical Quantum Block Krylov Subspace Projection (QBKSP)
 
@@ -35,7 +35,8 @@ def create_T_S_block_numerical(init_states, unitary_operator, max_iter=None, thr
         T: ndarray (B * max_iter, B * max_iter)
         S: ndarray (B * max_iter, B * max_iter)
     """
-      
+    # fix the seed
+    np.random.seed(1)
     B, N = init_states.shape
     if max_iter is None:
         max_iter = N // B
@@ -57,11 +58,11 @@ def create_T_S_block_numerical(init_states, unitary_operator, max_iter=None, thr
     array = []
     for b in range(B):
         for b2 in range(B):
-                if b <= b2:
-                    array.append([np.vdot(p[b], p[b2])])
-                else:
-                    array.append([np.conj(array[b2*B+b][0])])
-     
+                array.append([np.vdot(p[b], p[b2+i*B]) for i in range(1)])
+    if gaussian_noise:
+        # Add gaussian noise to the inner products
+        for i in range(len(array)):
+            array[i] = [x + np.random.normal(0, gaussian_value) + 1J* np.random.normal(0, gaussian_value) for x in array[i]]
    
     T = np.zeros((B * max_iter, B * max_iter), dtype=np.complex128)	
     S = np.zeros((B * max_iter, B * max_iter), dtype=np.complex128)
@@ -69,23 +70,16 @@ def create_T_S_block_numerical(init_states, unitary_operator, max_iter=None, thr
         for bi in range(B):
             idx_i = i * B + bi
             for bj in range(B):
-                if bi <= bj:
-                    array[bi*B+bj].append(np.vdot(p[bi], p[(i+1)*B+bj]))
-                else:
-                    array[bi*B+bj].append(array[bj*B+bi][i+1])
-
-                idx_j = i * B + bj
-                T[idx_j, idx_i] = array[bi*B+bj][1]
-                 
-                S[idx_j, idx_i] = array[bi * B + bj][0]
-                for j in range(i):
+                array[bi*B+bj].append(np.vdot(p[bi], p[(i+1)*B+bj]))
+                if gaussian_noise:
+                    array[bi*B+bj][-1] += np.random.normal(0, gaussian_value) + 1J* np.random.normal(0, gaussian_value)
+                for j in range(i + 1):
                         idx_j = j * B + bj
                         T[idx_j, idx_i] = array[bi*B+bj][i-j+1]
-                 
-                        S[idx_j, idx_i] = array[bi * B + bj][i - j]
-                        
-                        T[idx_i, idx_j] = np.conj(array[bi*B+bj][i-j-1])
-                        S[idx_i, idx_j] = np.conj(S[idx_j, idx_i]) 
+                        S[idx_j, idx_i] = array[bj * B + bi][i - j]
+                        if i!=j:
+                            T[idx_i, idx_j] = np.conj(array[bi*B+bj][i-j-1])
+                            S[idx_i, idx_j] = np.conj(S[idx_j, idx_i]) 
 
         # Check convergence if threshold is not None:
         if  threshold is not None:
