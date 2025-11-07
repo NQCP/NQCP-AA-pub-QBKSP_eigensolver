@@ -1,9 +1,9 @@
 # Quantum block Krylov subspace projector algorithm
 
 ## About 
-This repository contains the code utilized in the article **Quantum block Krylov subspace projector algorithm for computing low-lying eigenenergies**. Therefore, if you use our code, please adequately cite the article.
+This repository contains the code utilized in the article **Quantum block Krylov subspace projector algorithm for computing low-lying eigenenergies** by M. G. J. Oliveira and N. Glaser in PRA, 2025. Therefore, if you use our code, please adequately cite the article.
 
-Contributors: M. G. J. Oliveira and  N. A. Glaser, NNF Quantum Computing Programme, Niels Bohr Institute, University of Copenhagen, Denmark
+Contributors: M. G. J. Oliveira and  N. Glaser, NNF Quantum Computing Programme, Niels Bohr Institute, University of Copenhagen, Denmark
 
 ## Repository structure
 This repository is organized as follows:
