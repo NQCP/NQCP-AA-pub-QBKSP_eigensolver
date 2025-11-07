@@ -1,5 +1,7 @@
 # Quantum block Krylov subspace projector algorithm
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17552224.svg)](https://doi.org/10.5281/zenodo.17552224)
+
 ## About 
 This repository contains the code utilized in the article **Quantum block Krylov subspace projector algorithm for computing low-lying eigenenergies** by M. G. J. Oliveira and N. Glaser in PRA, 2025. Therefore, if you use our code, please adequately cite the article.
 
