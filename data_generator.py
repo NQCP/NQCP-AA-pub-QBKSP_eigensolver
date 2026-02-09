@@ -84,7 +84,7 @@ for sites in [2,3,4,5,6,7,8,9,10,11]:
             pkl.dump(S2, f)
 
         state = np.array([init_state, init_state2])
-        T3, S3 = create_T_S_block_quantum(state, exp, 200)
+        T3, S3 = create_T_S_block_numerical(state, exp, 200)
         
         file_s3 = f'{Data_path}/S_{sites}_heisenberg_line_{t}evol_random_overlap{overlap}_2nd{overlap}.pkl'
         file_t3 = f'{Data_path}/T_{sites}_heisenberg_line_{t}evol_random_overlap{overlap}_2nd{overlap}.pkl'
